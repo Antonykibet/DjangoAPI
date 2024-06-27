@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin,CreateModelMixin
 from rest_framework.views import APIView
 from .models import Article,Author
 from .serializers import Article_serializer
 
 # Create your views here.
+"""
+APIView
 class ArticleView(APIView):
     def get(self,request):
         articles = Article.objects.all()
@@ -32,3 +36,17 @@ class ArticleView(APIView):
         saved_article = get_object_or_404(Article.objects.all(),pk = pk)
         saved_article.delete()
         return Response({"detail":"Item {} deleted".format(pk)})
+"""
+
+"""
+#mixins
+class ArticleView(ListModelMixin,CreateModelMixin,GenericAPIView):
+    queryset = Article.objects.all()
+    serializer_class = Article_serializer
+    
+    def get(self,request):
+        return self.list(request)
+    def post(self,request):
+        print("Posted")
+        return self.create(request)
+"""
