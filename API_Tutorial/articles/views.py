@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin
 from rest_framework.views import APIView
 from .models import Article,Author
@@ -50,3 +50,17 @@ class ArticleView(ListModelMixin,CreateModelMixin,GenericAPIView):
         print("Posted")
         return self.create(request)
 """
+class ArticleView(ListCreateAPIView):
+    """
+        This GenericAPIView performs get(many) and creates(many)
+    """
+    queryset = Article.objects.all()
+    serializer_class = Article_serializer
+    
+class SingleArticleView(RetrieveUpdateAPIView):
+    """
+        This GenericAPIView performs get(single) and updates(single)
+    """
+    queryset = Article.objects.all()
+    serializer_class = Article_serializer
+    
