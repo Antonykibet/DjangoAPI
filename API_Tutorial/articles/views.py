@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.mixins import ListModelMixin,CreateModelMixin
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from .models import Article,Author
 from .serializers import Article_serializer
+from rest_framework.decorators import action
 
 # Create your views here.
 """
@@ -50,17 +52,31 @@ class ArticleView(ListModelMixin,CreateModelMixin,GenericAPIView):
         print("Posted")
         return self.create(request)
 """
+
+"""
 class ArticleView(ListCreateAPIView):
-    """
-        This GenericAPIView performs get(many) and creates(many)
-    """
+    
+        #This GenericAPIView performs get(many) and creates(many)
+    
     queryset = Article.objects.all()
     serializer_class = Article_serializer
     
 class SingleArticleView(RetrieveUpdateAPIView):
-    """
-        This GenericAPIView performs get(single) and updates(single)
-    """
+   
+        #This GenericAPIView performs get(single) and updates(single)
+    
     queryset = Article.objects.all()
     serializer_class = Article_serializer
+"""
+
+class ArticleView(ModelViewSet):
+
+    queryset = Article.objects.all()
+    serializer_class = Article_serializer
+    lookup_field = 'title'
+    
+    @action(methods="GET",detail=True)
+    def cancel(self,request):
+        print("Hitt")
+        return Response({"message":"Cancelled!!"})
     
